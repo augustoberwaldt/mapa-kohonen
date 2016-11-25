@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1480076298 source:c:\users\aluno\desktop\self-organizing-map\main.c
+	<stdio.h>
+	<stdlib.h>
+	"libs/file.h"
+
+1480079048 c:\users\aluno\desktop\self-organizing-map\libs\file.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "libs/file.h";
 int main()
 {
-    printf("Hello world!\n");
+
+    File_setPathFile(".\\iris.txt");
+    File_readFile();
+
     return 0;
 }
