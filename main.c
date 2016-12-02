@@ -85,6 +85,13 @@ int main()
              network[sAdressError_line][sAdressError_column][3] + (rate * (data[sAdressError_data].number[3])- network[sAdressError_line][sAdressError_column][3]);
 
 
+        for (vline = (sAdressError_line - 1); vline <= (sAdressError_line + 1);  vline++) {
+              if (vline >= 0 &&  vline < 20) {
+
+
+
+              }
+        }
 
    }
 
