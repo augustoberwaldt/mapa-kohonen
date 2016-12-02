@@ -4,7 +4,7 @@
 
 char pathFile[100];
 int fileSize = 0;
-int numRows = 0;
+int File_numRows = 0;
 float File_maxNumber = 0;
 float File_minNumber = 0;
 
@@ -57,12 +57,12 @@ b_file* File_readFile()
     while (token != NULL) {
         b_f[rows].number[count] = atof(token);
 		if (File_maxNumber < b_f[rows].number[count]) {
-			File_maxNumber =  b_f[rows].number[count];	
+			File_maxNumber =  b_f[rows].number[count];
 		}
 		if (File_minNumber > b_f[rows].number[count] || count == 0) {
-		    File_minNumber = b_f[rows].number[count];    	
+		    File_minNumber = b_f[rows].number[count];
 		}
-		
+
         count++;
         token = strtok(NULL, s);
     }
@@ -70,13 +70,13 @@ b_file* File_readFile()
     rows++;
 
   }
-  numRows = rows;
+  File_numRows = rows;
   return b_f;
 }
 
 int File_getSizeFile()
 {
 
-  return numRows;
+  return File_numRows;
 }
 
