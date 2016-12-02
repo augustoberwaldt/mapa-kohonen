@@ -5,6 +5,8 @@
 char pathFile[100];
 int fileSize = 0;
 int numRows = 0;
+float File_maxNumber = 0;
+float File_minNumber = 0;
 
 typedef struct base_file{
    float number[4];
@@ -54,6 +56,13 @@ b_file* File_readFile()
     int count = 0;
     while (token != NULL) {
         b_f[rows].number[count] = atof(token);
+		if (File_maxNumber < b_f[rows].number[count]) {
+			File_maxNumber =  b_f[rows].number[count];	
+		}
+		if (File_minNumber > b_f[rows].number[count] || count == 0) {
+		    File_minNumber = b_f[rows].number[count];    	
+		}
+		
         count++;
         token = strtok(NULL, s);
     }
