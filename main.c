@@ -4,7 +4,9 @@
 #include <time.h>
 #define line 20
 #define column 20
+
 float getRandom();
+void print_r(float network_clone[column][line][4]);
 
 /**
  *
@@ -13,8 +15,6 @@ float getRandom();
  **/
 int main()
 {
-
-
     srand(time(NULL));
     float network[20][20][4];
     float network_tmp[20][20][4];
@@ -58,6 +58,8 @@ int main()
             network[l][c][3] = getRandom();
        }
     }
+    print_r(network);
+    printf("\n+=================================================+\n\n");
 
     for (lfile = 0;  lfile < File_getSizeFile(); lfile++) {
         for (l=0; l<line; l++) {
@@ -124,25 +126,30 @@ int main()
           }
         }
    }
-
-   for (l=0; l< line; l++) {
-       for (c=0; c< column; c++) {
-           printf(
-                  "[%f %f %f %f] \n",
-                  network[l][c][0],
-                  network[l][c][1],
-                  network[l][c][2],
-                  network[l][c][3]
-
-                  );
-       }
-       printf("\n");
-    }
+   print_r(network);
 
    return 0;
 }
 
+void print_r(float network_clone[column][line][4])
+{
+    int l, c;
+    for (l=0; l< line; l++) {
+       for (c=0; c< column; c++) {
+           printf(
+                  "[%f %f %f %f] \n",
+                  network_clone[l][c][0],
+                  network_clone[l][c][1],
+                  network_clone[l][c][2],
+                  network_clone[l][c][3]
 
+                  );
+
+       }
+       printf("\n");
+    }
+
+}
 
 /**
  *
