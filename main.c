@@ -11,6 +11,7 @@ void print_r(float network_clone[column][line][4]);
 void save_file(float network_clone[column][line][4], char name[]);
 void printi_r(int network_activation_clone[column][line]);
 void test (int network_activ_clone[line][column] , float network_tmp[line][column][4]  ,float network[line][column][4]);
+void export_report(float network_clone[150][5], char name[]);
 /**
  *
  * main
@@ -155,7 +156,19 @@ void test (int network_activ_clone[line][column] , float network_tmp[line][colum
        sAdressError_column = 0;
        b_file *data  =  File_readFile();
        float error , less_error;
+       float report[150][5];
+       for (l=0; l< File_getSizeFile(); l++) {
+
+                   report[l][0] = 0;
+                   report[l][1] = 0;
+                   report[l][2] = 0;
+                   report[l][3] = 0;
+                   report[l][4] = 0;
+
+       }
        for (lfile = 0;  lfile < File_getSizeFile(); lfile++) {
+
+
             for (l = 0; l<line; l++) {
                for (c = 0; c<column; c++) {
                   for (i = 0;  i < File_numWidth;  i++) {
@@ -170,12 +183,22 @@ void test (int network_activ_clone[line][column] , float network_tmp[line][colum
                         less_error = error;
                         sAdressError_line = l;
                         sAdressError_column = c;
+
                   }
+
                }
             }
 
+            for (i = 0;  i < File_numWidth;  i++) {
+                report[lfile][i]  = data[lfile].number[i];
+            }
+
+            report[lfile][4] =  (sAdressError_line * 20) + sAdressError_column;
             network_activ_clone[sAdressError_line][sAdressError_column]++;
         }
+
+        export_report(report,  "./report.csv");
+
         printi_r(network_activ_clone);
 }
 
@@ -211,6 +234,27 @@ void printi_r(int network_activation_clone[column][line])
        printf("\n");
     }
 }
+
+/**
+ *
+ *Salva dados no arquivo
+ **/
+void export_report(float network_clone[150][5], char name[])
+{
+    int l, c;
+    FILE *arq = fopen(name, "w+");
+    for (l=0; l < File_getSizeFile(); l++) {
+      fprintf(arq, "%.3f, %.3f, %.3f, %.3f, %i \n" ,
+          network_clone[l][0],
+          network_clone[l][1],
+          network_clone[l][2],
+          network_clone[l][3],
+         (int) network_clone[l][4]
+      );
+    }
+    fclose(arq);
+}
+
 
 /**
  *
