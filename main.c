@@ -74,7 +74,7 @@ int main()
             for (l=0; l<line; l++) {
                for (c=0; c<column; c++) {
                   for (i = 0;  i < File_numWidth;  i++) {
-                    network_tmp[l][c][0] = network[l][c][i] - data[lfile].number[i] ;
+                    network_tmp[l][c][i] = network[l][c][i] - data[lfile].number[i] ;
                   }
 
                   error  =  fabs(network_tmp[l][c][0]) +  fabs(network_tmp[l][c][1]) +
