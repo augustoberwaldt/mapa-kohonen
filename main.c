@@ -7,6 +7,7 @@
 
 float getRandom();
 void print_r(float network_clone[column][line][4]);
+void save_file(float network_clone[column][line][4], char name[]);
 
 /**
  *
@@ -15,12 +16,18 @@ void print_r(float network_clone[column][line][4]);
  **/
 int main()
 {
+
+
+
     srand(time(NULL));
     float network[20][20][4];
     float network_tmp[20][20][4];
     int l = 0, c = 0 ,
         close_line   = 0,
-        close_column = 0 ;
+        close_column = 0,
+        count = 0,
+        i = 0
+        ;
     int sAdressError_line   = 0,
         sAdressError_column = 0,
         sAdressError_data = 0,
@@ -28,8 +35,8 @@ int main()
 
     float error = 0 ,
           less_error = 0 ,
-          rate       = 0.5,
-          close_rate = 0.3;
+          rate       = 0.6,
+          close_rate = 0.5;
 
     /** inicializando o matriz **/
     for (l=0; l< line; l++) {
@@ -49,6 +56,7 @@ int main()
     File_setPathFile(".\\iris.txt");
     b_file *data  =  File_readFile();
 
+
     /** gerando  aleatoriamente os valores **/
     for (l=0; l<line; l++) {
        for (c=0; c<column; c++) {
@@ -59,74 +67,57 @@ int main()
        }
     }
     print_r(network);
+    save_file(network , "./network.csv");
     printf("\n+=================================================+\n\n");
+    do {
+        for (lfile = 0;  lfile < File_getSizeFile(); lfile++) {
+            for (l=0; l<line; l++) {
+               for (c=0; c<column; c++) {
+                  for (i = 0;  i < File_numWidth;  i++) {
+                    network_tmp[l][c][0] = network[l][c][i] - data[lfile].number[i] ;
+                  }
 
-    for (lfile = 0;  lfile < File_getSizeFile(); lfile++) {
-        for (l=0; l<line; l++) {
-           for (c=0; c<column; c++) {
-               network_tmp[l][c][0] = network[l][c][0] - data[lfile].number[0] ;
-               network_tmp[l][c][1] = network[l][c][1] - data[lfile].number[1] ;
-               network_tmp[l][c][2] = network[l][c][2] - data[lfile].number[2] ;
-               network_tmp[l][c][3] = network[l][c][3] - data[lfile].number[3] ;
+                  error  =  fabs(network_tmp[l][c][0]) +  fabs(network_tmp[l][c][1]) +
+                          fabs(network_tmp[l][c][2]) + fabs(network_tmp[l][c][3]);
 
-               error  =  fabs(network_tmp[l][c][0]) +  fabs(network_tmp[l][c][1]) +
-                      fabs(network_tmp[l][c][2]) + fabs(network_tmp[l][c][3]);
 
-               if (error < less_error || (l== 0 && c == 0)) {
-                    less_error = error;
-                    sAdressError_line = l;
-                    sAdressError_column = c;
-                    sAdressError_data  = lfile;
+                  if (error < less_error || (l== 0 && c == 0)) {
+                        less_error = error;
+                        sAdressError_line = l;
+                        sAdressError_column = c;
+                        sAdressError_data  = lfile;
+                  }
                }
-           }
-        }
-
-        /** atualiza neuronio vencedor  **/
-        network[sAdressError_line][sAdressError_column][0] =
-             network[sAdressError_line][sAdressError_column][0] +
-               (rate * (data[sAdressError_data].number[0])- network[sAdressError_line][sAdressError_column][0]);
-
-        network[sAdressError_line][sAdressError_column][1] =
-             network[sAdressError_line][sAdressError_column][1] +
-               (rate * (data[sAdressError_data].number[1])- network[sAdressError_line][sAdressError_column][1]);
-
-        network[sAdressError_line][sAdressError_column][2] =
-             network[sAdressError_line][sAdressError_column][2] +
-               (rate * (data[sAdressError_data].number[2])- network[sAdressError_line][sAdressError_column][2]);
-
-        network[sAdressError_line][sAdressError_column][3] =
-             network[sAdressError_line][sAdressError_column][3] +
-               (rate * (data[sAdressError_data].number[3])- network[sAdressError_line][sAdressError_column][3]);
-
-
-        for (close_line = (sAdressError_line - 1); close_line <= (sAdressError_line + 1); close_line++) {
-
-          for (close_column = (sAdressError_line - 1); close_column <= (sAdressError_line + 1); close_column++) {
-
-            if ((close_line >= 0 && close_line < line) &&
-                (close_column >= 0 && close_column < column)) {
-
-                  network[close_line][close_column][0] =
-                    network[close_line][close_column][0] +
-                        (close_rate * (data[sAdressError_data].number[0])- network[close_line][close_column][0]);
-
-                  network[close_line][close_column][1] =
-                    network[close_line][close_column][1] +
-                        (close_rate * (data[sAdressError_data].number[1])- network[close_line][close_column][1]);
-
-                  network[close_line][close_column][2] =
-                    network[close_line][close_column][2] +
-                        (close_rate * (data[sAdressError_data].number[2])- network[close_line][close_column][2]);
-
-                  network[close_line][close_column][3] =
-                    network[close_line][close_column][0] +
-                        (close_rate * (data[sAdressError_data].number[0])- network[close_line][close_column][0]);
-
             }
-          }
-        }
-   }
+
+            /** atualiza neuronio vencedor  **/
+            for (i = 0;  i <File_numWidth;  i++) {
+                network[sAdressError_line][sAdressError_column][i] =
+                     network[sAdressError_line][sAdressError_column][i] +
+                       (rate * (data[sAdressError_data].number[i]) - network[sAdressError_line][sAdressError_column][i]);
+            }
+
+            for (close_line = (sAdressError_line - 1); close_line <= (sAdressError_line + 1); close_line++) {
+
+                  for (close_column = (sAdressError_line - 1); close_column <= (sAdressError_line + 1); close_column++) {
+
+                        if ((close_line >= 0 && close_line < line) &&
+                            (close_column >= 0 && close_column < column)) {
+                              for (i = 0;  i <File_numWidth;  i++) {
+                                  network[close_line][close_column][i] =
+                                    network[close_line][close_column][i] +
+                                        (close_rate * (data[sAdressError_data].number[i])- network[close_line][close_column][i]);
+
+                              }
+                         }
+                  }
+            }
+       }
+
+       count++;
+   } while(count <= 10);
    print_r(network);
+   save_file(network , "./network_after.csv");
 
    return 0;
 }
@@ -137,7 +128,7 @@ void print_r(float network_clone[column][line][4])
     for (l=0; l< line; l++) {
        for (c=0; c< column; c++) {
            printf(
-                  "[%f %f %f %f] \n",
+                  "[%.3f %.3f %.3f %.3f] \n",
                   network_clone[l][c][0],
                   network_clone[l][c][1],
                   network_clone[l][c][2],
@@ -148,7 +139,27 @@ void print_r(float network_clone[column][line][4])
        }
        printf("\n");
     }
+}
 
+/**
+ *
+ *Salva dados no arquivo
+ **/
+void save_file(float network_clone[column][line][4], char name[])
+{
+    int l, c;
+    FILE *arq = fopen(name, "w+");
+    for (l=0; l< line; l++) {
+       for (c=0; c< column; c++) {
+              fprintf(arq, "%.3f, %.3f, %.3f, %.3f, \n" ,  network_clone[l][c][0],
+                  network_clone[l][c][1],
+                  network_clone[l][c][2],
+                  network_clone[l][c][3]
+              );
+       }
+       printf("\n");
+    }
+    fclose(arq);
 }
 
 /**

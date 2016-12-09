@@ -5,6 +5,7 @@
 char pathFile[100];
 int fileSize = 0;
 int File_numRows = 0;
+int File_numWidth = 0;
 float File_maxNumber = 0;
 float File_minNumber = 0;
 
@@ -44,16 +45,17 @@ b_file* File_readFile()
   fileSize   = sizeFile(arq);
   char *line = (char*) malloc(sizeof(char*)  * fileSize);
   char *result;
-  int rows = 0;
+  int rows = 0 , count = 0;
   const char s[2] = ",";
   b_file  *b_f = (b_file*) malloc(sizeof(b_file)  * fileSize);
+
   while (!feof(arq)) {
     result = fgets(line, 100, arq);
     if (!result){
       	continue;
 	}
     char *token = strtok(result, s);
-    int count = 0;
+    count= 0; 
     while (token != NULL) {
         b_f[rows].number[count] = atof(token);
 		if (File_maxNumber < b_f[rows].number[count]) {
@@ -70,6 +72,7 @@ b_file* File_readFile()
     rows++;
 
   }
+  File_numWidth = count;
   File_numRows = rows;
   return b_f;
 }
