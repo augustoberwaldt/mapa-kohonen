@@ -28,13 +28,19 @@ int sizeFile(FILE *arquivo)
     fseek(arquivo, posicaoAtual, SEEK_SET);
     return (int) tamanho;
 }
+
 void File_setPathFile(char path[])
 {
     strcpy(pathFile, path);
 }
 
+/**
+ *
+ *  le o arquivo
+ */ 
 b_file* File_readFile()
 {
+  
   FILE *arq = fopen(pathFile, "r");
 
   if (!arq) {
@@ -50,33 +56,47 @@ b_file* File_readFile()
   b_file  *b_f = (b_file*) malloc(sizeof(b_file)  * fileSize);
 
   while (!feof(arq)) {
+    
     result = fgets(line, 100, arq);
+    
     if (!result){
       	continue;
-	}
+	  }
+
     char *token = strtok(result, s);
     count= 0; 
+    
     while (token != NULL) {
-        b_f[rows].number[count] = atof(token);
-		if (File_maxNumber < b_f[rows].number[count]) {
-			File_maxNumber =  b_f[rows].number[count];
-		}
-		if (File_minNumber > b_f[rows].number[count] || count == 0) {
-		    File_minNumber = b_f[rows].number[count];
-		}
+      
+      b_f[rows].number[count] = atof(token);
+  		
+      if (File_maxNumber < b_f[rows].number[count]) {
+  			File_maxNumber =  b_f[rows].number[count];
+  		}
 
-        count++;
-        token = strtok(NULL, s);
-    }
+  		if (File_minNumber > b_f[rows].number[count] || count == 0) {
+  		    File_minNumber = b_f[rows].number[count];
+  		}
 
-    rows++;
+          count++;
+          token = strtok(NULL, s);
+      }
+
+      rows++;
 
   }
+
   File_numWidth = count;
   File_numRows = rows;
+
   return b_f;
 }
 
+/**
+ *
+ * Retorna o tamanho arquivo
+ *
+*/
 int File_getSizeFile()
 {
 

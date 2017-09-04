@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "libs/file.h";
 #include <time.h>
+
+/** Define tamanho fixo da matriz de aprendizado **/
 #define line 20
 #define column 20
 #define were 100
@@ -12,6 +14,7 @@ void save_file(float network_clone[column][line][4], char name[]);
 void printi_r(int network_activation_clone[column][line]);
 void test (int network_activ_clone[line][column] , float network_tmp[line][column][4]  ,float network[line][column][4]);
 void export_report(float network_clone[150][5], char name[]);
+
 /**
  *
  * main
@@ -21,8 +24,6 @@ int main()
 {
 
     int option = 0;
-
-
 
     srand(time(NULL));
     float network[20][20][4];
@@ -131,14 +132,18 @@ int main()
                }
 
                count++;
+
            } while(count <= were);
+
        } else if (option == 2) {
+          
           test(network_activation, network_tmp, network);
-             for (l=0; l< line; l++) {
-               for (c=0; c<column; c++) {
-                   network_activation[l][c] = 0;
-               }
-             }
+          
+          for (l=0; l< line; l++) {
+            for (c=0; c<column; c++) {
+                 network_activation[l][c] = 0;
+            }
+          }
        }
 
     } while(option != 0);
@@ -157,6 +162,7 @@ void test (int network_activ_clone[line][column] , float network_tmp[line][colum
        b_file *data  =  File_readFile();
        float error , less_error;
        float report[150][5];
+
        for (l=0; l< File_getSizeFile(); l++) {
 
                    report[l][0] = 0;
@@ -166,8 +172,8 @@ void test (int network_activ_clone[line][column] , float network_tmp[line][colum
                    report[l][4] = 0;
 
        }
-       for (lfile = 0;  lfile < File_getSizeFile(); lfile++) {
 
+       for (lfile = 0;  lfile < File_getSizeFile(); lfile++) {
 
             for (l = 0; l<line; l++) {
                for (c = 0; c<column; c++) {
@@ -183,7 +189,6 @@ void test (int network_activ_clone[line][column] , float network_tmp[line][colum
                         less_error = error;
                         sAdressError_line = l;
                         sAdressError_column = c;
-
                   }
 
                }
@@ -220,6 +225,7 @@ void print_r(float network_clone[column][line][4])
        printf("\n");
     }
 }
+
 void printi_r(int network_activation_clone[column][line])
 {
     int l, c;
