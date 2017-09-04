@@ -1,1 +1,5 @@
-#Rede de Kohonen
+# Rede de Kohonen
+
+Este algoritmo utiliza o método de aprendizagem por competição (competitive learning), considerado o mais comum nas RNA auto-organizáveis, permitindo que aconteça o aprendizado dividindo-se os padrões de entrada dos dados em conjuntos inseparáveis. Este método avalia os neurônios de saída da rede de maneira que ocorra uma competição entre eles, tendo-se como resultado o neurônio que possui maior ativação. A rede neural de Kohonen é composta por duas camadas: a de entrada e de Kohonen. Cada nó da camada de entrada tem a função de distribuir os valores padrões para a de Kohonen, que é um conjunto de nodos organizados de forma tabular.
+O vetor de entrada possui seus elementos conectados com cada nó da camada Kohonen por meio de ligações,
+as quais são responsáveis por manterem atualizados os valores durante o processo de treinamento da RNA.
